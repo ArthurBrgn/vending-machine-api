@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Classification;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,13 +16,13 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
-			$table->string('email')->nullable()->unique();
-			$table->string('code')->nullable()->unique();
-			$table->integer('current_points');
-			$table->dateTime('last_recharge_date')->nullable();
-			$table->boolean('is_active')->default(true);
-			$table->foreignIdFor(Classification::class)->constrained();
+            $table->string('name');
+            $table->string('email')->nullable()->unique();
+            $table->string('code')->unique();
+            $table->integer('current_points');
+            $table->dateTime('last_recharge_date')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->foreignIdFor(Classification::class)->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

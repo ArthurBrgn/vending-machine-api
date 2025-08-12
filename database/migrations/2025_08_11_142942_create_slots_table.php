@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Machine;
 use App\Models\ProductCategory;
 use Illuminate\Database\Migrations\Migration;
@@ -15,12 +17,12 @@ return new class extends Migration
     {
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
-			$table->integer('number');
-			$table->integer('price');
-			$table->boolean('is_available')->default(true);
-			$table->foreignIdFor(Machine::class)->constrained();
-			$table->foreignIdFor(ProductCategory::class)->constrained();
+            $table->string('product_name');
+            $table->integer('number');
+            $table->integer('price');
+            $table->boolean('is_available')->default(true);
+            $table->foreignIdFor(Machine::class)->constrained();
+            $table->foreignIdFor(ProductCategory::class)->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

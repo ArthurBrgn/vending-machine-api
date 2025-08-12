@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Employee;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,9 +16,9 @@ return new class extends Migration
     {
         Schema::create('balance_recharge_logs', function (Blueprint $table) {
             $table->id();
-			$table->datetime('recharge_date');
-			$table->integer('points_added');
-			$table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
+            $table->datetime('recharge_date');
+            $table->integer('points_added');
+            $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

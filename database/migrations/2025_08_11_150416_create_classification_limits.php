@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Classification;
 use App\Models\ProductCategory;
 use Illuminate\Database\Migrations\Migration;
@@ -14,12 +16,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('classification_limits', function (Blueprint $table) {
-			$table->foreignIdFor(Classification::class, 'classification_id')->constrained()->cascadeOnDelete();
-			$table->foreignIdFor(ProductCategory::class, 'product_category_id')->constrained()->cascadeOnDelete();
-			$table->integer('daily_limit');
+            $table->foreignIdFor(Classification::class, 'classification_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(ProductCategory::class, 'product_category_id')->constrained()->cascadeOnDelete();
+            $table->integer('daily_limit');
             $table->timestamps();
 
-			$table->unique(['classification_id', 'product_category_id']);
+            $table->unique(['classification_id', 'product_category_id']);
         });
     }
 

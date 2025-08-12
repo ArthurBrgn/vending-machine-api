@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Employee;
 use App\Models\ProductCategory;
 use Illuminate\Database\Migrations\Migration;
@@ -14,12 +16,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employee_daily_product_limits', function (Blueprint $table) {
-            $table->id();
-			$table->date('date');
-			$table->integer('count');
-			$table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
-			$table->foreignIdFor(ProductCategory::class)->constrained()->cascadeOnDelete();
+            $table->date('date');
+            $table->integer('count');
+            $table->foreignIdFor(Employee::class, 'employee_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(ProductCategory::class, 'product_category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['employee_id', 'product_category_id']);
         });
     }
 

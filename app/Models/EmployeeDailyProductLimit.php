@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-final class BalanceRechargeLog extends Model
+final class EmployeeDailyProductLimit extends Pivot
 {
     /**
      * Get the attributes that should be cast.
@@ -16,8 +16,8 @@ final class BalanceRechargeLog extends Model
     protected function casts(): array
     {
         return [
-            'recharge_date' => 'datetime',
-            'points_added' => 'integer',
+            'date' => 'date',
+            'count' => 'integer',
         ];
     }
 }
