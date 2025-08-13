@@ -23,7 +23,6 @@ return new class extends Migration
             $table->foreignIdFor(Card::class)->constrained();
             $table->foreignIdFor(Machine::class)->constrained();
             $table->foreignIdFor(Slot::class)->constrained();
-            $table->text('failure_reason')->nullable();
             $table->timestamps();
         });
     }

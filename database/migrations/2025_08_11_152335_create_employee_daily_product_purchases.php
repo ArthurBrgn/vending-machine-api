@@ -15,9 +15,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employee_daily_product_limits', function (Blueprint $table) {
+        Schema::create('employee_daily_product_purchases', function (Blueprint $table) {
             $table->date('date');
-            $table->integer('count');
+            $table->integer('daily_count')->default(0);
             $table->foreignIdFor(Employee::class, 'employee_id')->constrained()->cascadeOnDelete();
             $table->foreignIdFor(ProductCategory::class, 'product_category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee_daily_product_limits');
+        Schema::dropIfExists('employee_daily_product_purchases');
     }
 };

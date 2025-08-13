@@ -7,11 +7,17 @@ namespace App\Http\Controllers;
 use App\Exceptions\InvalidCardException;
 use App\Exceptions\InvalidSlotException;
 use App\Exceptions\NotEnoughPointsException;
+use App\Exceptions\ProductCategoryNotFoundException;
+use App\Exceptions\ProductCategoryQuotaExceedException;
 use App\Exceptions\ProductPriceMismatchException;
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Card;
+use App\Models\ClassificationLimit;
+use App\Models\EmployeeDailyProductPurchase;
 use App\Models\Slot;
+use App\Models\Transaction;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
 
 final class PurchaseController extends Controller
 {
@@ -28,7 +34,7 @@ final class PurchaseController extends Controller
         $card = Card::query()
             ->with('employee')
             ->where('number', $cardNumber)
-            ->where('is_active', false)
+            ->where('is_active', true)
             ->where(function (Builder $query) {
                 $query->whereNull('expired_date')
                     ->orWhere('expired_date', '>=', now());
@@ -60,30 +66,54 @@ final class PurchaseController extends Controller
             throw new NotEnoughPointsException;
         }
 
-        /**
-         * Checks à faire :
-         *
-         * La card existe et est bien valide
-         *
-         * Check si on trouve un employé lié à la carte
-         *
-         * Le slot est actif et existe bien dans la machine
-         *
-         * Le price correspond bien au price du slot
-         *
-         * Le quota du product_id par rapport à la classification
-         *
-         * L'employé possède assez de points restants
-         */
+        $employee = $card->employee;
 
-        /**
-         * Si check ok :
-         *
-         * Insérer la transaction
-         *
-         * Update les points de l'employee
-         *
-         * Update le daily count de la catégorie de l'employee
-         */
+        $dailyProductCategoryLimit = ClassificationLimit::query()
+            ->where('classification_id', $employee->classification_id)
+            ->where('product_category_id', $slot->product_category_id)
+            ->value('daily_limit');
+
+        if ($dailyProductCategoryLimit === null) {
+            throw new ProductCategoryNotFoundException;
+        }
+
+        $employeeDailyProductPurchase = EmployeeDailyProductPurchase::firstOrNew([
+            'employee_id' => $employee->id,
+            'product_category_id' => $slot->product_category_id,
+            'date' => now()->format('Y-m-d'),
+        ]);
+
+        if ($employeeDailyProductPurchase->daily_count >= $dailyProductCategoryLimit) {
+            throw new ProductCategoryQuotaExceedException;
+        }
+
+        DB::transaction(function () use ($employee, $card, $slot, $employeeDailyProductPurchase, $productPrice) {
+            $employee->decrement('current_points', $productPrice);
+
+            if ($employeeDailyProductPurchase->exists) {
+                $employeeDailyProductPurchase->increment('daily_count');
+            } else {
+                $employeeDailyProductPurchase->daily_count += 1;
+
+                $employeeDailyProductPurchase->save();
+            }
+
+            $transaction = Transaction::create([
+                'employee_id' => $employee->id,
+                'card_id' => $card->id,
+                'machine_id' => $slot->machine_id,
+                'slot_id' => $slot->id,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Purchase successful',
+                'data' => [
+                    'transaction_id' => $transaction->id,
+                    'points_deducted' => $productPrice,
+                    'remaining_points' => $employee->current_points,
+                ],
+            ]);
+        });
     }
 }
