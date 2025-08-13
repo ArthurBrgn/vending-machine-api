@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Machine;
 use App\Models\ProductCategory;
 use App\Models\Slot;
+use Exception;
 use Illuminate\Database\Seeder;
 
 final class MachineSeeder extends Seeder
@@ -28,15 +29,12 @@ final class MachineSeeder extends Seeder
     {
         // Get product categories
         $productCategories = ProductCategory::query()
-            ->whereIn('slug', self::PRODUCT_CATEGORIES_SLUGS)
             ->get()
             ->keyBy('slug');
 
-        // Check if product categories slugs exists
+        // Check product categories existance
         if ($productCategories->count() !== count(self::PRODUCT_CATEGORIES_SLUGS)) {
-            $this->command->error('At least one category is missing.');
-
-            return;
+            throw new Exception('At least one category is missing.');
         }
 
         Machine::factory()
@@ -66,7 +64,7 @@ final class MachineSeeder extends Seeder
                     $slotsData[] = [
                         'product_name' => $productName,
                         'number' => $slotNumber,
-                        'price' => rand(100, 1000),
+                        'price' => rand(50, 150),
                         'is_available' => true,
                         'machine_id' => $machine->id,
                         'product_category_id' => $category->id,
