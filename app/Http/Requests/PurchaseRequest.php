@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 final class PurchaseRequest extends FormRequest
 {
@@ -29,5 +32,17 @@ final class PurchaseRequest extends FormRequest
             'slot_number' => ['required', 'integer'],
             'product_price' => ['required', 'integer'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        throw new ValidationException(
+            $validator,
+            response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+                'errors' => $validator->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }

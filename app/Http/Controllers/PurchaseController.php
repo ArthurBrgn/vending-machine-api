@@ -80,14 +80,14 @@ final class PurchaseController extends Controller
         $employeeDailyProductPurchase = EmployeeDailyProductPurchase::firstOrNew([
             'employee_id' => $employee->id,
             'product_category_id' => $slot->product_category_id,
-            'date' => now()->format('Y-m-d'),
+            'date' => today(),
         ]);
 
         if ($employeeDailyProductPurchase->daily_count >= $dailyProductCategoryLimit) {
             throw new ProductCategoryQuotaExceedException;
         }
 
-        DB::transaction(function () use ($employee, $card, $slot, $employeeDailyProductPurchase, $productPrice) {
+        return DB::transaction(function () use ($employee, $card, $slot, $employeeDailyProductPurchase, $productPrice) {
             $employee->decrement('current_points', $productPrice);
 
             if ($employeeDailyProductPurchase->exists) {

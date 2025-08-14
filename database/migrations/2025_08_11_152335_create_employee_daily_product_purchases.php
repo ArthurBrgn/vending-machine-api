@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(ProductCategory::class, 'product_category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
 
-            $table->unique(['employee_id', 'product_category_id']);
+            $table->unique(['employee_id', 'product_category_id', 'date']);
         });
     }
 
