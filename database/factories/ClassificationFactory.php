@@ -19,8 +19,28 @@ final class ClassificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Regular employee',
-            'daily_points_limit' => 300,
+            'name' => fake()->name,
+            'daily_points_limit' => fake()->numberBetween(100, 500),
         ];
+    }
+
+    public function regularEmployee(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Regular employee',
+                'daily_points_limit' => 300,
+            ];
+        });
+    }
+
+    public function manager(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Manager',
+                'daily_points_limit' => 500,
+            ];
+        });
     }
 }

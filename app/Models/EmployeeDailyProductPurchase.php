@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 final class EmployeeDailyProductPurchase extends Pivot
 {
+    use HasFactory;
+
     protected $table = 'employee_daily_product_purchases';
 
     /**

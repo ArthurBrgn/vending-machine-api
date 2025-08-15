@@ -21,6 +21,7 @@ final class EmployeeFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
+            'current_points' => fake()->numberBetween(0, 500),
             'is_active' => true,
         ];
     }

@@ -99,9 +99,11 @@ final class PurchaseController extends Controller
             }
 
             $transaction = Transaction::create([
+                'points_deducted' => $productPrice,
                 'employee_id' => $employee->id,
                 'card_id' => $card->id,
                 'machine_id' => $slot->machine_id,
+                'product_category_id' => $slot->product_category_id,
                 'slot_id' => $slot->id,
             ]);
 

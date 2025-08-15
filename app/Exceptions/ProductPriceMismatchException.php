@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Exceptions;
 
-use Exception;
 use Illuminate\Http\Response;
 
-final class ProductPriceMismatchException extends Exception
+final class ProductPriceMismatchException extends PurchaseException
 {
     public function __construct()
     {

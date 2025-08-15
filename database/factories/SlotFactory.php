@@ -19,7 +19,10 @@ final class SlotFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'product_name' => fake()->word,
+            'is_available' => true,
+            'number' => fake()->numberBetween(1, 40),
+            'price' => fake()->numberBetween(50, 150),
         ];
     }
 }

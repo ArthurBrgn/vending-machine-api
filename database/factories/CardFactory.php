@@ -21,6 +21,7 @@ final class CardFactory extends Factory
         return [
             'expired_date' => fake()->optional(0.8)->dateTimeBetween('+1 month', '+2 years'),
             'notes' => fake()->optional()->text(100),
+            'is_active' => true,
         ];
     }
 }

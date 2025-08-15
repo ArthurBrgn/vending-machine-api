@@ -7,9 +7,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ClassificationLimit>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EmployeeDailyProductPurchase>
  */
-final class ClassificationLimitFactory extends Factory
+final class EmployeeDailyProductPurchaseFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,8 @@ final class ClassificationLimitFactory extends Factory
     public function definition(): array
     {
         return [
-            'daily_limit' => fake()->numberBetween(1, 5),
+            'date' => today(),
+            'daily_count' => fake()->numberBetween(1, 5),
         ];
     }
 }

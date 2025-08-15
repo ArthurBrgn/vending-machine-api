@@ -22,6 +22,7 @@ final class ProductCategoryFactory extends Factory
     {
         return [
             'name' => fake()->randomElement($this->productCategories),
+            'description' => fake()->optional()->text(100),
         ];
     }
 }

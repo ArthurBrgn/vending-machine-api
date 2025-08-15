@@ -24,6 +24,7 @@ final class MachineFactory extends Factory
             'name' => 'Machine '.fake()->numberBetween(1, 100),
             'location' => fake()->randomElement($this->locations),
             'ip_address' => fake()->ipv4(),
+            'is_active' => true,
         ];
     }
 }
