@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -21,5 +22,12 @@ final class ProductCategory extends Model
                 $productCategory->slug = Str::slug($productCategory->name);
             }
         });
+    }
+
+    public function classifications(): BelongsToMany
+    {
+        return $this->belongsToMany(Classification::class, 'classification_limits')
+            ->withPivot(['daily_limit'])
+            ->withTimestamps();
     }
 }
