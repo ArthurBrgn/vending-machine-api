@@ -17,7 +17,8 @@ final class BalanceRechargeLog extends Model
     {
         return [
             'recharge_date' => 'datetime',
-            'points_added' => 'integer',
+            'new_balance' => 'integer',
+            'old_balance' => 'integer',
         ];
     }
 }

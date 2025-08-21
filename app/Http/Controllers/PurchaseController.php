@@ -17,6 +17,7 @@ use App\Models\EmployeeDailyProductPurchase;
 use App\Models\Slot;
 use App\Models\Transaction;
 use Illuminate\Contracts\Database\Query\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 final class PurchaseController extends Controller
@@ -24,7 +25,7 @@ final class PurchaseController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(PurchaseRequest $request)
+    public function __invoke(PurchaseRequest $request): JsonResponse
     {
         $cardNumber = $request->validated('card_number');
         $machineId = (int) $request->validated('machine_id');

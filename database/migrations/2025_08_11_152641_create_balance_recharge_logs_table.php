@@ -17,7 +17,8 @@ return new class extends Migration
         Schema::create('balance_recharge_logs', function (Blueprint $table) {
             $table->id();
             $table->datetime('recharge_date');
-            $table->integer('points_added');
+            $table->integer('old_balance');
+            $table->integer('new_balance');
             $table->foreignIdFor(Employee::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
