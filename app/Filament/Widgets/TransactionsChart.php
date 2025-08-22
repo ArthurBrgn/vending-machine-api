@@ -12,7 +12,7 @@ use Flowframe\Trend\TrendValue;
 
 final class TransactionsChart extends ChartWidget
 {
-    protected ?string $heading = 'Transactions Chart';
+    protected ?string $heading = 'Transactions chart';
 
     protected function getData(): array
     {
@@ -63,7 +63,6 @@ final class TransactionsChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Transactions',
                     'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
                 ],
             ],
@@ -97,4 +96,15 @@ final class TransactionsChart extends ChartWidget
     {
         return 'The number of transactions processed during the selected period.';
     }
+
+	protected function getOptions(): array
+	{
+		return [
+			'plugins' => [
+				'legend' => [
+					'display' => false,
+				],
+			],
+		];
+	}
 }
