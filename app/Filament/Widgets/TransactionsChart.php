@@ -97,14 +97,14 @@ final class TransactionsChart extends ChartWidget
         return 'The number of transactions processed during the selected period.';
     }
 
-	protected function getOptions(): array
-	{
-		return [
-			'plugins' => [
-				'legend' => [
-					'display' => false,
-				],
-			],
-		];
-	}
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'display' => false,
+                ],
+            ],
+        ];
+    }
 }
